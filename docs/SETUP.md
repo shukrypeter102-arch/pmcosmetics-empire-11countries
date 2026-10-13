@@ -1,261 +1,131 @@
-# PM Cosmetics Hub - Setup Guide
+# PM Cosmetics Hub — Setup & Launch Gate
 
-## 🚀 Quick Start
+## Current runtime
 
-### Prerequisites
-- Node.js >= 18.0.0
-- npm >= 9.0.0
-- Git
-- Docker (optional, for database)
+The canonical repository is deployed to Railway for the production API and is also structured for Vercel via `api/index.mjs` and `vercel.json`.
 
-### 1. Clone Repository
+Runtime flow:
+
+`Manus catalog -> validation -> Airtable evidence -> publication gate -> WooCommerce/Shopify/Noon/Amazon/Jumia`
+
+The API intentionally keeps the commercial publication gate **CLOSED** until product identity, barcode/SKU, stock, price, and image evidence are verified.
+
+## Integration endpoints
+
+- `GET /api/health` — runtime and architecture health
+- `GET /api/manus/status` — Manus adapter configuration
+- `POST /api/manus/import` — validate a Manus product array or configured Manus feed; staging only
+- `POST /api/manus/woocommerce/sync` — Manus → WooCommerce pipeline; dry-run by default
+- `GET /api/woocommerce/status` — WooCommerce configuration state without exposing secrets
+- `GET /api/woocommerce/check` — live WooCommerce connectivity check when credentials are configured
+- `POST /api/woocommerce/sync` — batch create/update; dry-run by default
+- `GET /api/products/staging` — evidence staging status
+
+## WooCommerce configuration
+
+Create WooCommerce REST API credentials with the minimum permissions required for the intended operation. WooCommerce supports API-key authentication over HTTPS, including Basic authentication with consumer key/secret.
+
+Set these variables in Railway/Vercel secret storage:
+
+`WOOCOMMERCE_URL`
+`WOOCOMMERCE_CONSUMER_KEY`
+`WOOCOMMERCE_CONSUMER_SECRET`
+`WOOCOMMERCE_SYNC_ENABLED=true` only after connectivity is verified
+`WOOCOMMERCE_BATCH_SIZE=50`
+
+The connector reads existing products with pagination, matches on SKU, and uses WooCommerce's batch product endpoint for creates/updates. WooCommerce's product controller exposes batch create/update/delete operations.
+
+## Manus catalog over 2,000 products
+
+The Manus adapter accepts a configured HTTPS JSON feed or a direct JSON body. It validates SKU/name identity, removes duplicate SKUs from the run, and supports up to 10,000 records per run by configuration.
+
+The Manus adapter does **not** automatically make the products publishable. Evidence remains required before any commercial sync.
+
+## Verification sequence
+
 ```bash
-git clone https://github.com/Pmcosmetics/pmcosmetics-empire-11countries.git
-cd pmcosmetics-empire-11countries
-```
-
-### 2. Install Dependencies
-```bash
-npm install
-```
-
-### 3. Setup Environment Variables
-```bash
-cp .env.example .env
-# Edit .env and fill in your API keys and secrets
-```
-
-### 4. Initialize Database
-```bash
-# If using PostgreSQL with Docker
-docker run -d \
-  --name pmcosmetics-db \
-  -e POSTGRES_USER=pmcosmetics \
-  -e POSTGRES_PASSWORD=your_secure_password \
-  -e POSTGRES_DB=pmcosmetics \
-  -p 5432:5432 \
-  postgres:15
-```
-
-### 5. Validate Project
-```bash
+npm ci
+npm run build
 npm run validate
-```
-
-### 6. Start Development Server
-```bash
-npm run dev
-```
-
-Server will run on `http://localhost:3000`
-
----
-
-## 📋 Configuration
-
-### Markets Configuration
-Edit `config/markets.json` to manage the 11 countries
-
-### Catalog Schema
-The product schema is defined in `config/catalog.schema.json`
-
-### Environment Variables
-Copy `config/integrations.example.env` to `.env` and add:
-- Shopify API credentials
-- Instagram Business credentials
-- Etsy API keys
-- WhatsApp Business API token
-- Notion API key
-- Database connection strings
-
----
-
-## 🔌 Integration Setup
-
-### Shopify
-1. Create Shopify app at https://partners.shopify.com/
-2. Get API credentials
-3. Add to `.env` file
-4. Run: `npm run sync:shopify`
-
-### Instagram
-1. Create Facebook App at https://developers.facebook.com/
-2. Add Instagram Business credentials
-3. Get long-lived access token
-4. Add to `.env` file
-
-### Etsy
-1. Register app at https://www.etsy.com/developers/
-2. Get OAuth credentials
-3. Add to `.env` file
-
-### WhatsApp Business
-1. Get Business Account at Meta
-2. Create app and get phone number ID
-3. Generate access token
-4. Add to `.env` file
-
----
-
-## 📦 Database Setup
-
-### PostgreSQL Schema
-```bash
-npm run db:migrate
-```
-
-### Seed Sample Data
-```bash
-npm run db:seed
-```
-
----
-
-## 🧪 Testing
-
-### Run All Tests
-```bash
 npm test
 ```
 
-### Run Tests in Watch Mode
-```bash
-npm run test:watch
+Then verify:
+
+```
+GET /api/health
+GET /api/manus/status
+GET /api/woocommerce/status
+GET /api/woocommerce/check
 ```
 
-### Generate Coverage Report
-```bash
-npm test -- --coverage
+For a large Manus feed, run a dry-run first:
+
+```json
+{
+  "dryRun": true
+}
 ```
 
----
+Only change `COMMERCIAL_PUBLISH_GATE` to `OPEN` after the evidence gate has been independently verified for the exact records being published.
 
-## 📊 Data Management
+## Security
 
-### Validate Catalog
-```bash
-npm run validate:catalog
-```
+- Never commit WooCommerce keys, Manus tokens, or other credentials.
+- Keep secrets in Railway/Vercel secret storage.
+- Use HTTPS for all remote integrations.
+- Keep commercial publication CLOSED for unverified inventory.
+- Do not treat a successful connector dry-run as evidence that PM owns the stock.
 
-### Validate Inventory
-```bash
-npm run validate:inventory
-```
 
-### Sync Inventory from Shopify
-```bash
-npm run sync:inventory
-```
 
-### Update Prices
-```bash
-npm run sync:prices
-```
+## WhatsApp Cloud API
 
-### Generate Reports
-```bash
-npm run generate:reports
-```
+The production server exposes /api/whatsapp/status, GET /api/whatsapp/webhook, and POST /api/whatsapp/webhook.
 
----
+Callback URL:
+https://pmcosmetics-empire-11countries-production.up.railway.app/api/whatsapp/webhook
 
-## 🚀 Deployment
+Keep only these in Railway secret storage:
+- WHATSAPP_BUSINESS_ACCESS_TOKEN
+- WHATSAPP_BUSINESS_PHONE_NUMBER_ID
+- WHATSAPP_BUSINESS_VERIFY_TOKEN
+- WHATSAPP_WEBHOOK_SECRET
 
-### Development
-```bash
-npm run dev
-```
+Meta verification must complete before the integration is considered live. The commercial publication gate remains independent and CLOSED.
 
-### Production Build
-```bash
-npm run build
-npm start
-```
+## Authentication and Operations Dashboard
 
-### Deploy to Vercel
-```bash
-vercel deploy --prod
-```
+Authentication uses Supabase Auth with server-side exact-email allowlist verification.
 
-### Deploy to GitHub Pages
-```bash
-npm run build
-npm run deploy
-```
+Allowed administration identities:
+- shukrypeter79@gmail.com
+- shukrypeter102@gmail.com
 
----
+Authentication endpoints:
+- GET /api/auth/config
+- GET /api/auth/session
 
-## 🔐 Security Checklist
+Authenticated operations UI:
+- /ops/dashboard.html
 
-- [ ] Never commit `.env` file
-- [ ] Rotate API keys regularly
-- [ ] Use environment variables for all secrets
-- [ ] Enable HTTPS in production
-- [ ] Setup firewall rules
-- [ ] Enable database encryption
-- [ ] Configure CORS properly
-- [ ] Use strong JWT secrets
-- [ ] Enable rate limiting
-- [ ] Setup monitoring and logging
+The dashboard reads catalog, inventory, currencies, orders, customer analytics and reporting from Supabase. It does not bypass the Product Evidence Gate or Commercial Publish Gate.
 
----
+## Security deployment controls
 
-## 📱 Mobile App Setup
+Recommended production variables:
 
-### React Native Setup
-```bash
-cd app/mobile
-npm install
-```
+HTTPS_ONLY=true
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=60
+COMMERCIAL_PUBLISH_GATE=CLOSED
 
-### Build iOS
-```bash
-npm run build:ios
-```
+Production credentials belong only in Railway/Vercel secret storage. Never commit or paste live provider credentials into Git, documentation, issues, or chat.
 
-### Build Android
-```bash
-npm run build:android
-```
+## Current live currency rule
 
----
+The connected Shopify Egypt shop is verified as EGP. Keep Egyptian retail values in EGP. Any non-EGP channel requires an explicit target currency and verified conversion policy.
 
-## 🐛 Troubleshooting
 
-### Port Already in Use
-```bash
-# Change PORT in .env
-PORT=3001 npm run dev
-```
-
-### Database Connection Error
-- Check DATABASE_URL in .env
-- Verify database is running
-- Check credentials
-
-### API Integration Issues
-- Verify API keys in .env
-- Check API rate limits
-- Review logs for errors
-
----
-
-## 📞 Support
-
-For issues or questions:
-- 📧 Email: tech@pmcosmetics.hub
-- 💬 Discord: [Join Server]
-- 📱 WhatsApp: Business Support
-
----
-
-## 📚 Additional Resources
-
-- [Architecture Documentation](./ARCHITECTURE.md)
-- [API Documentation](./API.md)
-- [Deployment Guide](./DEPLOYMENT.md)
-- [Security Guide](./SECURITY.md)
-
----
-
-**Happy Building! 🚀**
+## Batch publication safety
+`BATCH_COMMERCIAL_PUBLISH_GATE` defaults to `CLOSED`. It is never implicitly opened by the Railway production environment. Any explicit opening requires product-level evidence verification and authorized operator access.

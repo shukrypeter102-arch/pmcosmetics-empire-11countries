@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="الدخول الآمن إلى PM Cosmetics Hub عبر رابط بريد إلكتروني مصرح به.">
+  <link rel="canonical" href="/auth"><title>الدخول الآمن | PM Cosmetics Hub</title>
+  <style>
+    :root{--ink:#171612;--gold:#d6b45a;--cream:#f7f3eb;--paper:#fffdf9;--muted:#706c63;--line:#e8e1d4;--accent:#29483e}*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,"Segoe UI",sans-serif}.wrap{width:min(680px,calc(100% - 28px));margin:auto;padding:28px 0}.brand{display:flex;align-items:center;gap:12px;margin-bottom:28px}.brand img{width:54px;height:54px}.brand strong{display:block;font-family:Georgia,serif;letter-spacing:1px}.brand small{display:block;color:var(--muted);font-size:11px}.card{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:25px;margin-bottom:16px;box-shadow:0 14px 40px #3128130d}.status{display:inline-block;padding:7px 11px;border-radius:999px;background:#fff8df;border:1px solid #e5cf8c;color:#725b1c;font-size:12px;font-weight:700}.card h1{font:34px Georgia,serif;margin:16px 0 9px}.card h2{font:20px Georgia,serif;margin:0 0 8px}.card p{color:var(--muted);line-height:1.9;font-size:14px}.field{width:100%;border:1px solid #d8d0c2;background:#fff;border-radius:12px;padding:13px 14px;outline:none;margin:8px 0}.field:focus{border-color:var(--gold)}.button{width:100%;border:0;border-radius:12px;padding:13px 15px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;margin-top:8px}.message{min-height:24px;margin-top:12px;font-size:13px}.ok{color:#176b3a}.err{color:#9d1c1c}.muted{color:var(--muted);font-size:12px;line-height:1.8}a{color:var(--accent);font-weight:700}
+  </style>
+</head>
+<body><main class="wrap">
+  <a class="brand" href="/"><img src="/pmcosmetics-logo.svg" alt="شعار PM Cosmetics Hub"><span><strong>PM COSMETICS HUB</strong><small>الدخول الآمن إلى لوحة الإمبراطورية</small></span></a>
+  <section class="card"><span class="status">رابط دخول آمن</span><h1>مرحبًا بعودتك</h1><p>أدخلي بريدًا مصرحًا به لإرسال رابط دخول لمرة واحدة. لا نعرض عناوين الحسابات التشغيلية على الصفحة العامة.</p><form id="loginForm"><label for="email">البريد الإلكتروني</label><input class="field" id="email" type="email" autocomplete="email" required placeholder="name@example.com"><button class="button" type="submit">إرسال رابط الدخول</button></form><div id="message" class="message" aria-live="polite"></div></section>
+  <section class="card"><h2>حماية الوصول</h2><p>الوصول محصور بالحسابات المصرح بها على مستوى الخادم. روابط Shopify وInstagram وTikTok والمنصات الأخرى تبقى داخل مركز الربط بعد تسجيل الدخول.</p><p class="muted">إذا لم يكن حسابك مصرحًا به، لن يتم إنشاء جلسة دخول.</p><a href="/">العودة إلى الواجهة الرئيسية</a></section>
+</main>
+<script type="module">
+  const form=document.getElementById('loginForm'), message=document.getElementById('message'); let client=null;
+  try{const m=await import('https://esm.sh/@supabase/supabase-js@2.117.2');const r=await fetch('/api/auth/config');const cfg=await r.json();if(cfg.supabaseUrl&&cfg.publishableKey) client=m.createClient(cfg.supabaseUrl,cfg.publishableKey)}catch{}
+  form.addEventListener('submit',async e=>{e.preventDefault();const email=document.getElementById('email').value.trim();if(!client){message.innerHTML='<span class="err">خدمة الدخول غير مهيأة حاليًا. حاولي لاحقًا.</span>';return}const button=form.querySelector('button');button.disabled=true;const {error}=await client.auth.signInWithOtp({email,options:{emailRedirectTo:location.origin+'/auth'}});button.disabled=false;message.innerHTML=error?'<span class="err">تعذر إرسال الرابط. تحققي من البريد المصرح به وحاولي مرة أخرى.</span>':'<span class="ok">إذا كان البريد مصرحًا به، سيصل رابط الدخول قريبًا.</span>'});
+</script></body></html>

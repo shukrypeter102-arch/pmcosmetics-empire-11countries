@@ -1,0 +1,51 @@
+{
+  "brandName": "PM COSMETICS HUB",
+  "logo": {
+    "asset": "/pmcosmetics-logo.svg",
+    "alt": "PM COSMETICS HUB",
+    "concept": "Golden PM monogram + circle on transparent background"
+  },
+  "phones": {
+    "primary": {
+      "local": "01055655649",
+      "international": "201055655649",
+      "wa": "https://wa.me/201055655649"
+    },
+    "secondary": {
+      "local": "01203151461",
+      "international": "201203151461",
+      "wa": "https://wa.me/201203151461"
+    },
+    "tertiary": {
+      "local": "01270677739",
+      "international": "201270677739",
+      "wa": "https://wa.me/201270677739"
+    }
+  },
+  "whatsappCatalog": "https://wa.me/c/201055655649",
+  "policy": {
+    "sameLogoEverywhere": true,
+    "sameBrandNameEverywhere": true,
+    "sameColorsEverywhere": true,
+    "publicWhatsAppCtaNumber": "01055655649",
+    "primaryRole": "canonical WhatsApp for orders, enquiries, and market CTAs",
+    "secondaryRole": "backup direct-call contact; not a default WhatsApp CTA",
+    "tertiaryRole": "additional direct-call contact; not a default WhatsApp CTA",
+    "samePrimaryWhatsAppEverywhere": true
+  },
+  "commercialName": "PM Cosmetics Hub",
+  "tagline": "Empowering Beauty Across 11 Countries",
+  "colors": {
+    "gold": "#D4AF37",
+    "black": "#0A0A0A"
+  },
+  "commerce": {
+    "primaryStore": {
+      "platform": "Shopify",
+      "domain": "pmcosmetics-lgdc2mrf.myshopify.com",
+      "url": "https://pmcosmetics-lgdc2mrf.myshopify.com",
+      "role": "canonical_primary_store"
+    },
+    "policy": "One canonical PM storefront; connected sales channels reuse the approved PM Cosmetics Hub identity and evidence-gated catalog."
+  }
+}

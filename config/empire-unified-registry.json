@@ -1,0 +1,470 @@
+{
+  "version": 2,
+  "canonicalName": "PM COSMETICS HUB",
+  "empire": {
+    "repository": "Pmcosmetics/pmcosmetics-empire-11countries",
+    "railwayUrl": "https://pmcosmetics-empire-11countries-production.up.railway.app",
+    "supabaseProjectRef": "rhozehqlpnmzmknlpmvf",
+    "identityPortal": "/auth"
+  },
+  "brand": {
+    "name": "PM COSMETICS HUB",
+    "logo": "/pmcosmetics-logo.svg",
+    "phones": {
+      "primary": {
+        "local": "01055655649",
+        "international": "201055655649",
+        "role": "primary catalog/contact",
+        "whatsapp": "https://wa.me/201055655649"
+      },
+      "secondary": {
+        "local": "01203151461",
+        "international": "201203151461",
+        "role": "backup/direct contact",
+        "whatsapp": "https://wa.me/201203151461"
+      }
+    },
+    "whatsappCatalog": "https://wa.me/c/201055655649",
+    "canonicalLogo": "/pmcosmetics-logo.svg",
+    "contactEmails": {
+      "primary": "shukrypeter79@gmail.com",
+      "secondary": "shukrypeter102@gmail.com"
+    }
+  },
+  "identities": {
+    "canonicalProvider": "Google/Gmail",
+    "allowedEmails": [
+      "shukrypeter79@gmail.com",
+      "shukrypeter102@gmail.com"
+    ],
+    "primaryEmail": "shukrypeter79@gmail.com",
+    "secondaryEmail": "shukrypeter102@gmail.com",
+    "policy": "Exact email allowlist; external platforms still require provider-specific OAuth/credentials"
+  },
+  "catalog": {
+    "commercial": {
+      "sourceOfTruth": "Empire Product Master / Evidence Gate",
+      "publishRule": "Publish-Ready + evidenceVerified only",
+      "commercialGate": "CLOSED",
+      "currentPublishReadyProducts": 1,
+      "publishReadySkus": [
+        "DERMAELLE007"
+      ],
+      "evidenceGateStatus": "OPEN_FOR_PRODUCT_LEVEL_QA",
+      "globalCommercialPublishGate": "CLOSED"
+    },
+    "reference": {
+      "source": "AlFouad Pharmacies",
+      "sourceBranch": "ref/alfouad-cosmetics-catalog-2026-10-02",
+      "uniqueProducts": 3218,
+      "categoryRows": 3479,
+      "referenceOnly": true,
+      "autoPublish": false,
+      "url": "/reference-catalog"
+    },
+    "taxonomy": "cosmetics-only",
+    "categories": [
+      "skin-care",
+      "hair-care",
+      "body-care",
+      "perfumes",
+      "kids-care",
+      "korean"
+    ]
+  },
+  "channels": [
+    {
+      "id": "facebook",
+      "kind": "social",
+      "integration": "windsor.ai",
+      "status": "connected_verified"
+    },
+    {
+      "id": "shopify",
+      "kind": "commerce",
+      "integration": "shopify_native",
+      "status": "connected_verified"
+    },
+    {
+      "id": "instagram",
+      "kind": "social",
+      "integration": "windsor.ai",
+      "status": "oauth_pending"
+    },
+    {
+      "id": "tiktok",
+      "kind": "social",
+      "integration": "windsor.ai",
+      "status": "oauth_pending"
+    },
+    {
+      "id": "tiktok_shop",
+      "kind": "commerce",
+      "integration": "windsor.ai",
+      "status": "oauth_pending"
+    },
+    {
+      "id": "amazon_sp",
+      "kind": "marketplace",
+      "integration": "windsor.ai",
+      "status": "reference_staged_3218_oauth_pending"
+    },
+    {
+      "id": "google_merchant",
+      "kind": "commerce",
+      "integration": "windsor.ai",
+      "status": "oauth_pending"
+    },
+    {
+      "id": "woocommerce",
+      "kind": "commerce",
+      "integration": "windsor.ai",
+      "status": "manual_credentials_pending"
+    },
+    {
+      "id": "salla",
+      "kind": "commerce",
+      "integration": "direct_api",
+      "status": "reference_staged_3218_api_token_pending"
+    },
+    {
+      "id": "instashop",
+      "kind": "marketplace",
+      "integration": "direct_api",
+      "status": "direct_integration_pending"
+    },
+    {
+      "id": "etsy",
+      "kind": "marketplace",
+      "integration": "direct_api",
+      "status": "reference_staged_3218_oauth_pending"
+    },
+    {
+      "id": "temu",
+      "kind": "marketplace",
+      "integration": "direct_api",
+      "status": "reference_staged_3218_authorization_pending"
+    },
+    {
+      "id": "jumia",
+      "kind": "marketplace",
+      "integration": "direct_api",
+      "status": "reference_staged_3218_seller_api_pending"
+    },
+    {
+      "id": "talabat",
+      "kind": "marketplace",
+      "integration": "direct_api",
+      "status": "reference_staged_3218_partner_api_pending"
+    },
+    {
+      "id": "whatsapp_primary",
+      "kind": "messaging",
+      "integration": "meta_waba",
+      "status": "public_identity_ready_credentials_pending",
+      "phone": "01055655649",
+      "international": "201055655649",
+      "whatsapp": "https://wa.me/201055655649",
+      "catalog": "https://wa.me/c/201055655649"
+    },
+    {
+      "id": "whatsapp_secondary",
+      "kind": "messaging",
+      "integration": "meta_waba",
+      "status": "public_identity_ready_credentials_pending",
+      "phone": "01203151461",
+      "international": "201203151461",
+      "whatsapp": "https://wa.me/201203151461"
+    },
+    {
+      "id": "take_app",
+      "kind": "commerce",
+      "integration": "public_store_link",
+      "status": "reference_staged_3218_api_pending",
+      "url": "https://take.app/ar/pmcosmetics",
+      "role": "WhatsApp storefront / order intake"
+    },
+    {
+      "id": "olx_dubizzle_egypt",
+      "kind": "marketplace",
+      "integration": "public_classifieds",
+      "status": "reference_staged_3218_seller_connection_pending",
+      "url": "https://www.dubizzle.com.eg/",
+      "legacyName": "OLX Egypt",
+      "category": "Fashion & Beauty"
+    },
+    {
+      "id": "snapchat",
+      "kind": "social",
+      "integration": "windsor.ai",
+      "status": "oauth_pending",
+      "authUrl": "https://onboard.windsor.ai/connect?connector=snapchat&next=/snapchat/authorize"
+    },
+    {
+      "id": "telegram",
+      "kind": "messaging",
+      "integration": "direct_bot_api",
+      "status": "bot_credentials_pending",
+      "note": "No Telegram connector exposed in current ChatGPT/Windsor integrations; Bot API credentials and channel/bot identifier are required"
+    },
+    {
+      "id": "noon",
+      "kind": "marketplace",
+      "integration": "direct_api",
+      "status": "reference_staged_3218_credentials_pending"
+    },
+    {
+      "id": "kenz",
+      "kind": "marketplace",
+      "integration": "unverified_target",
+      "status": "reference_staged_3218_unverified_marketplace",
+      "note": "Verified as a brand/product presence on Jumia, not as a standalone marketplace account"
+    },
+    {
+      "id": "knooz",
+      "kind": "marketplace",
+      "integration": "unverified_target",
+      "status": "reference_staged_3218_unverified_marketplace",
+      "note": "Public identity is ambiguous; no verified seller integration surface found"
+    }
+  ],
+  "synchronization": {
+    "brandIdentity": true,
+    "phoneIdentity": true,
+    "emailIdentity": true,
+    "catalogRouting": true,
+    "referenceCatalogIsolation": true,
+    "commercialPublishGate": true,
+    "takeAppRouting": true,
+    "olxMarketplaceRegistry": true,
+    "whatsappPrimaryRouting": true,
+    "whatsappSecondaryRouting": true,
+    "snapchatRouting": true,
+    "telegramRouting": true,
+    "currentAssessment": {
+      "githubMainHead": "3d7a96d905afa9949a903088a3a13a03b167dbce",
+      "railwayRuntimeCommit": null,
+      "railwayRuntimeVerification": "NOT_CERTIFIED_IN_CURRENT_SESSION",
+      "reason": "Railway runtime evidence was not returned in the current session; the current GitHub main head is 3d7a96d905afa9949a903088a3a13a03b167dbce, while Railway running SHA remains unobserved.",
+      "globalCommercialPublishGate": "POLICY_CLOSED"
+    }
+  },
+  "lastLiveSync": {
+    "verifiedAt": "2026-10-04T12:29:00+03:00",
+    "source": "GitHub + Railway + Supabase + Airtable + Windsor.ai + Shopify + Product Evidence Gate",
+    "snapshot": "config/live-sync-snapshot.json"
+  },
+  "supportingIntegrations": [
+    {
+      "id": "github",
+      "status": "active_verified",
+      "detail": "canonical repo/main writable"
+    },
+    {
+      "id": "railway",
+      "status": "connected_runtime_unverified",
+      "detail": "Current session has no independent runtime proof (running commit SHA + /api/health); current GitHub main is 3d7a96d905afa9949a903088a3a13a03b167dbce. Prior deployment metadata is historical and not accepted as current-runtime evidence."
+    },
+    {
+      "id": "supabase",
+      "status": "active_verified_with_warning",
+      "detail": "SQL accessible; RLS verified; 1 security warning (leaked-password protection disabled) and 17 performance INFO unused-index notices remain"
+    },
+    {
+      "id": "airtable",
+      "status": "connected",
+      "detail": "canonical registry/evidence base available"
+    },
+    {
+      "id": "notion",
+      "status": "connected",
+      "detail": "command center readable; new blocks limited by plan entitlement"
+    },
+    {
+      "id": "shopify",
+      "status": "connected_verified",
+      "detail": "Pmcosmetics store accessible; 215 products observed with 1 ACTIVE and 214 non-ACTIVE; DERMAELLE007 is the active controlled-pilot SKU at 239 EGP with 48 units. Commercial publication remains gated.",
+      "catalogQuality": {
+        "zeroPriceVariants": 195,
+        "missingSkuProducts": 189,
+        "missingFeaturedImageProducts": 140,
+        "evidencePendingTagProducts": 105
+      }
+    },
+    {
+      "id": "windsor_facebook",
+      "status": "connected_verified",
+      "accountCount": 3
+    },
+    {
+      "id": "windsor_google_ads",
+      "status": "connected_verified",
+      "accountCount": 1
+    },
+    {
+      "id": "windsor_google_business_profile",
+      "status": "connected_verified",
+      "accountCount": 1
+    },
+    {
+      "id": "figma",
+      "status": "active_verified"
+    },
+    {
+      "id": "canva",
+      "status": "active_verified"
+    },
+    {
+      "id": "monday",
+      "status": "active_verified"
+    },
+    {
+      "id": "linear",
+      "status": "active_verified"
+    }
+  ],
+  "identityIntegrationMatrix": {
+    "path": "config/account-integration-matrix.json",
+    "status": "verified_and_versioned",
+    "primaryCommerceDesign": "shukrypeter79@gmail.com",
+    "engineeringIntegration": "shukrypeter102@gmail.com",
+    "backupIdentities": [
+      "shukrypeter72@gmail.com",
+      "petershukry67@gmail.com"
+    ],
+    "apple": "not_verified_as_direct_Empire_connector",
+    "authAllowlistUnchanged": true,
+    "canonicalBrand": "PM COSMETICS HUB"
+  },
+  "canva": {
+    "status": "active_verified",
+    "empireFolderId": "FAHW7imEhgU",
+    "empireFolderUrl": "https://www.canva.com/folder/FAHW7imEhgU",
+    "officialLogoAssetId": "MAHW7s3NYE4",
+    "officialLogoName": "PM COSMETICS HUB — Official Logo",
+    "logoSource": "public/pmcosmetics-logo.svg"
+  },
+  "currencyPolicy": {
+    "canonicalEgyptRetailCurrency": "EGP",
+    "publicRetailPriceSource": "AlFouad Pharmacies reference catalog",
+    "shopifyBaseCurrencyObserved": "EGP",
+    "shopifyEgyptMarketAttempt": "live_egp_catalog_currency_verified",
+    "rule": "Keep Egyptian retail prices in EGP for the connected Egypt shop. Never auto-convert EGP values into USD. Any non-EGP channel requires an explicit target currency and verified conversion policy before numeric publication."
+  },
+  "marketplaceReferenceStaging": {
+    "uniqueProducts": 3218,
+    "categoryRows": 3479,
+    "source": "AlFouad Pharmacies",
+    "referenceOnly": true,
+    "commercialPublishGate": "CLOSED",
+    "manifest": "config/marketplace-insertion-2026-10-03.json"
+  },
+  "windsorHub": {
+    "provider": "Windsor.ai",
+    "workspaceEmail": "shukrypeter102@gmail.com",
+    "plan": "Trial",
+    "dashboard": "https://onboard.windsor.ai/app",
+    "role": "Central integration hub for connected marketing/commerce connectors",
+    "connectedNow": {
+      "facebook": [
+        {
+          "id": "758458256557661",
+          "name": "Peter Shukry"
+        },
+        {
+          "id": "689846283340520",
+          "name": "Peter Shukry"
+        },
+        {
+          "id": "1308509513682283",
+          "name": "WhatsApp Ad Account"
+        }
+      ],
+      "google_ads": [
+        {
+          "id": "663-195-7015"
+        }
+      ],
+      "google_business_profile": [
+        {
+          "id": "locations/8169383730265167314",
+          "name": "P.M Cosmetics"
+        }
+      ]
+    },
+    "destinations": {
+      "supabase": {
+        "credentialId": "oauth:2481",
+        "label": "Pmcosmetics-empire-11countries",
+        "setupUrl": "https://onboard.windsor.ai/app/destinations/overview#supabase"
+      }
+    },
+    "pendingAuthorization": {
+      "shopify": "https://onboard.windsor.ai/connect?connector=shopify&next=/shopify/authorize",
+      "instagram": "https://onboard.windsor.ai/connect?connector=instagram&next=/instagram/authorize",
+      "tiktok": "https://onboard.windsor.ai/connect?connector=tiktok&next=/tiktok/authorize",
+      "tiktok_shop": "https://onboard.windsor.ai/connect?connector=tiktok_shop&next=/tiktok_shop/authorize",
+      "amazon_sp": "https://onboard.windsor.ai/connect?connector=amazon_sp&next=/amazon_sp/authorize",
+      "google_merchant": "https://onboard.windsor.ai/connect?connector=google_merchant&next=/google_merchant/authorize",
+      "woocommerce": "https://onboard.windsor.ai/connect?connector=woocommerce&next=/app/woocommerce",
+      "snapchat": "https://onboard.windsor.ai/connect?connector=snapchat&next=/snapchat/authorize"
+    },
+    "unsupportedOrNoConnector": {
+      "salla": "No Windsor connector exposed",
+      "etsy": "No Windsor connector exposed",
+      "temu": "No Windsor connector exposed",
+      "jumia": "No Windsor connector exposed",
+      "talabat": "No Windsor connector exposed",
+      "instashop": "No Windsor connector exposed"
+    },
+    "liveVerifiedAt": "2026-10-03",
+    "noWindsorConnector": [
+      "salla",
+      "etsy",
+      "temu",
+      "jumia",
+      "talabat",
+      "instashop"
+    ],
+    "statusRule": "Only accounts returned by Windsor get_connectors are marked connected_verified."
+  },
+  "openBlockers": [
+    {
+      "id": "supabase-auth-leaked-passwords",
+      "status": "EXTERNAL_SETTING_REQUIRED",
+      "detail": "Enable leaked-password protection in Supabase Auth settings; connector has no project-auth setting write surface"
+    },
+    {
+      "id": "shopify-egp-pricing",
+      "status": "OBSERVED_EGP__NO_USD_AUTOCONVERSION",
+      "detail": "Recorded 2026-10-05 Shopify Egypt reconciliation reports EGP. Keep EGP values in EGP; any non-EGP channel requires an explicit target currency."
+    },
+    {
+      "id": "shopify-evidence",
+      "status": "EVIDENCE_GATE_CLOSED",
+      "detail": "Product Master has 1 Publish-Ready SKU (DERMAELLE007); 72 products remain blocked/held. Global Commercial Publish Gate remains CLOSED, so no commercial publication is permitted yet."
+    },
+    {
+      "id": "windsor-oauth",
+      "status": "USER_AUTHORIZATION_REQUIRED",
+      "detail": "Instagram, TikTok, TikTok Shop, Amazon SP, Google Merchant, WooCommerce and Snapchat require provider OAuth/credentials"
+    },
+    {
+      "id": "notion-block-limit",
+      "status": "WORKSPACE_ENTITLEMENT_REQUIRED",
+      "detail": "New Notion page creation is blocked by workspace free-block limit"
+    }
+  ],
+  "lastEvidenceGateCheck": {
+    "verifiedAt": "2026-10-07",
+    "source": "Supabase live",
+    "productsTotal": 2,
+    "activeProducts": 1,
+    "publishReadyProducts": 1,
+    "blockedProducts": 72,
+    "identityBlocked": 59,
+    "imageStockBlocked": 13,
+    "primaryPublishReadySku": "DERMAELLE007",
+    "globalCommercialGate": "CLOSED"
+  }
+}

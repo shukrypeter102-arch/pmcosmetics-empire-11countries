@@ -1,0 +1,191 @@
+{
+  "version": 2,
+  "generatedAt": "2026-10-04",
+  "brand": "PM COSMETICS HUB",
+  "sourceOfTruth": "Empire Product Master / Evidence Gate",
+  "publicationPolicy": {
+    "onlyPublishReady": true,
+    "commercialGate": "CLOSED",
+    "referenceCatalogsNeverAutoPublish": true
+  },
+  "channels": [
+    {
+      "id": "shopify",
+      "group": "commerce",
+      "integration": "shopify_native",
+      "status": "connected_verified"
+    },
+    {
+      "id": "facebook",
+      "group": "social",
+      "integration": "windsor.ai",
+      "status": "connected_verified"
+    },
+    {
+      "id": "instagram",
+      "group": "social",
+      "integration": "windsor.ai",
+      "status": "pending_account_authorization"
+    },
+    {
+      "id": "tiktok",
+      "group": "social",
+      "integration": "windsor.ai",
+      "status": "pending_account_authorization"
+    },
+    {
+      "id": "tiktok_shop",
+      "group": "commerce",
+      "integration": "windsor.ai",
+      "status": "pending_account_authorization"
+    },
+    {
+      "id": "amazon_sp",
+      "group": "marketplace",
+      "integration": "windsor.ai",
+      "status": "pending_account_authorization"
+    },
+    {
+      "id": "google_merchant",
+      "group": "commerce",
+      "integration": "windsor.ai",
+      "status": "pending_account_authorization"
+    },
+    {
+      "id": "woocommerce",
+      "group": "commerce",
+      "integration": "windsor.ai",
+      "status": "pending_account_authorization"
+    },
+    {
+      "id": "salla",
+      "group": "commerce",
+      "integration": "independent_api",
+      "status": "not_supported_by_windsor"
+    },
+    {
+      "id": "instashop",
+      "group": "marketplace",
+      "integration": "independent_api",
+      "status": "not_supported_by_windsor"
+    },
+    {
+      "id": "etsy",
+      "group": "marketplace",
+      "integration": "independent_api",
+      "status": "not_supported_by_windsor"
+    },
+    {
+      "id": "whatsapp_business_primary",
+      "group": "messaging",
+      "integration": "meta_waba",
+      "status": "credentials_pending",
+      "publicNumber": "01055655649"
+    },
+    {
+      "id": "whatsapp_business_backup",
+      "group": "messaging",
+      "integration": "meta_waba",
+      "status": "credentials_pending",
+      "publicNumber": "01203151461"
+    },
+    {
+      "id": "temu",
+      "group": "marketplace",
+      "integration": "independent_api",
+      "status": "not_supported_by_windsor"
+    },
+    {
+      "id": "jumia",
+      "group": "marketplace",
+      "integration": "independent_api",
+      "status": "not_supported_by_windsor"
+    },
+    {
+      "id": "talabat",
+      "group": "marketplace",
+      "integration": "independent_api",
+      "status": "not_supported_by_windsor"
+    }
+  ],
+  "currentEvidence": {
+    "publishReadyProducts": 1,
+    "publishReadySkus": [
+      "DERMAELLE007"
+    ],
+    "primaryPublishReady": {
+      "sku": "DERMAELLE007",
+      "gtin": "6223007905060",
+      "pmStock": 48,
+      "acquisitionCostEGP": 260,
+      "status": "Publish-Ready",
+      "authorizationDocument": "Verified"
+    }
+  },
+  "executionMode": "operational_pilot",
+  "blockerIsolation": {
+    "productEvidenceFailuresDoNotStopPlatformOrChannelReadiness": true,
+    "commercialPublicationStillRequiresPublishReady": true,
+    "referenceCatalogIsNonPublishing": true
+  },
+  "pilot": {
+    "purpose": "Keep Empire live and channel-ready while individual products complete evidence",
+    "productScope": "Publish-Ready only",
+    "currentPublishReadyProducts": 1,
+    "currentBlockedProductsRemainOutOfPublication": true
+  },
+  "brandIdentity": {
+    "name": "PM COSMETICS HUB",
+    "logo": "/pmcosmetics-logo.svg",
+    "primaryPhone": "01055655649",
+    "secondaryPhone": "01203151461",
+    "whatsappCatalog": "https://wa.me/c/201055655649"
+  },
+  "channelPolicy": {
+    "brandIdentityRequired": true,
+    "phoneIdentity": {
+      "primary": "01055655649",
+      "secondary": "01203151461"
+    }
+  },
+  "identityHub": {
+    "provider": "Google/Gmail",
+    "allowedEmails": [
+      "shukrypeter79@gmail.com",
+      "shukrypeter102@gmail.com"
+    ],
+    "primaryEmail": "shukrypeter79@gmail.com",
+    "secondaryEmail": "shukrypeter102@gmail.com",
+    "portal": "/auth",
+    "policy": "Exact email allowlist"
+  },
+  "catalogHub": {
+    "commercialSource": "Empire Product Master / Evidence Gate",
+    "referenceSource": "AlFouad Pharmacies",
+    "referenceCatalogPath": "/reference-catalog",
+    "referenceUniqueProducts": 3218,
+    "referenceOnly": true,
+    "commercialGate": "CLOSED"
+  },
+  "registryPath": "config/empire-unified-registry.json",
+  "lastLiveSync": {
+    "verifiedAt": "2026-10-04T09:48:00+03:00",
+    "source": "GitHub + Railway + Supabase + Airtable + Windsor.ai + Shopify",
+    "snapshot": "config/live-sync-snapshot.json"
+  },
+  "supportingIntegrations": [
+    "github",
+    "railway",
+    "supabase",
+    "airtable",
+    "notion",
+    "shopify",
+    "windsor_facebook",
+    "windsor_google_ads",
+    "windsor_google_business_profile",
+    "figma",
+    "canva",
+    "monday",
+    "linear"
+  ]
+}

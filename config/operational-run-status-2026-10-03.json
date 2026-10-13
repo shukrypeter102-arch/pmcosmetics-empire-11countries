@@ -1,0 +1,47 @@
+{
+  "generatedAt": "2026-10-05T05:00:00Z",
+  "mode": "OPERATIONAL_REFERENCE_STAGING",
+  "brand": "PM COSMETICS HUB",
+  "referenceUniqueProducts": 3218,
+  "referenceCategoryRows": 3479,
+  "shopifyDraftProductsObserved": 140,
+  "shopifyDraftPageHasNextPage": true,
+  "commercialPublishGate": "CLOSED",
+  "publishReadyProducts": 1,
+  "deployment": {
+    "platform": "Railway",
+    "service": "pmcosmetics-empire-11countries",
+    "deploymentId": "9c0c72fe-2cb1-4e01-b4c9-71cb68a16f9a",
+    "status": "SUCCESS",
+    "verifiedAt": "2026-10-05T04:33:53Z",
+    "runtimeCommit": "376d50a305204e9a2db8186da64e8e8672a3c348"
+  },
+  "execution": {
+    "centralCatalogRegistered": true,
+    "multiChannelStagingRegistered": true,
+    "commercialPublication": false,
+    "nextOperationalRule": "Continue evidence-gated pilot; publish only Publish-Ready + evidenceVerified products. Global commercial gate remains CLOSED.",
+    "runtimeVerified": true,
+    "supabaseCounts": {
+      "products": 2,
+      "inventoryRows": 2,
+      "blockedProducts": 73,
+      "blockedIdentity": 59,
+      "blockedImageStock": 13,
+      "physicalInventoryVerifications": 1,
+      "publishReadyProducts": 1,
+      "activeCommerceChannels": 3
+    },
+    "securityAdvisor": "WARN: leaked password protection disabled",
+    "performanceAdvisor": "INFO: 18 unused indexes; no runtime blocker",
+    "sourceDrift": "documentation_only_commits_after_runtime_deploy"
+  },
+  "nextRun": "Continue reference-to-draft/feed staging; no commercial publication until evidenceVerified + Publish-Ready.",
+  "githubHeadCommit": "376d50a305204e9a2db8186da64e8e8672a3c348",
+  "shopify": {
+    "totalProducts": 215,
+    "draftProducts": 140,
+    "archivedProducts": 75,
+    "commercialPublication": "blocked_by_Evidence_Gate"
+  }
+}

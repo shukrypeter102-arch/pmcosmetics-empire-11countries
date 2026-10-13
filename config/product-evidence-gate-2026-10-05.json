@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-05",
+  "canonicalBrand": "PM COSMETICS HUB",
+  "gate": {
+    "name": "Product Evidence Gate",
+    "workflowStatus": "ENFORCED_AND_AUDITED",
+    "commercialPublishGate": "CLOSED",
+    "publishReadyProducts": 1,
+    "blockedProducts": 72,
+    "blockedBreakdown": {
+      "Blocked — Identity": 52,
+      "Blocked — Image/Stock": 20
+    },
+    "referenceProducts": 3218,
+    "referenceCategoryRows": 3479
+  },
+  "publishReadyRule": [
+    "PM-owned product identity",
+    "PM-owned exact image",
+    "PM stock evidence",
+    "cost/provenance evidence",
+    "SKU/GTIN validation",
+    "QA pass",
+    "evidenceVerified=true",
+    "publishable=true"
+  ],
+  "evidencePolicy": {
+    "retailerEvidence": "identity/reference only",
+    "referenceCatalog": "never auto-publish",
+    "whatsappCatalog": "customer/catalog source; live catalog contents not machine-readable in current connector session",
+    "noInference": true,
+    "noSyntheticSkuOrGtin": true
+  },
+  "completedEvidence": [
+    {
+      "sku": "DERMAELLE007",
+      "product": "Dermaelle Hyalubalance Sebum Control Cleansing Gel 200ml",
+      "status": "Publish-Ready",
+      "gtin": "6223007905060",
+      "pmStock": 48,
+      "acquisitionCostEGP": 260,
+      "imageEvidence": {
+        "canonicalRecord": "Connected OneDrive QA record",
+        "recordStatus": "verified_in_canonical_gate_record",
+        "executionRule": "Use this current canonical evidence record; older snapshots stating that no PM-owned image was found are historical/superseded and must not override the current Product Evidence Gate record.",
+        "directAssetReadback": "not independently re-read in the current connector session"
+      },
+      "authorizationStatus": "Verified",
+      "qaPassedAt": "2026-10-04",
+      "livePilotStatus": "ACTIVE in Shopify"
+    }
+  ],
+  "blockersForNextCandidates": [
+    "DERMAELLE028: exact variant identity/barcode + PM-owned exact image + inventory reconciliation + authorization document",
+    "86067 / CeraVe Hydrating Cleanser 236ml: PM-owned stock + PM-owned exact image + PM acquisition cost",
+    "Remaining blocked records: PM-owned evidence must independently satisfy the full rule"
+  ],
+  "acceptance": {
+    "productLevelGate": "OPEN_FOR_VERIFIED_CANDIDATES",
+    "globalCommercialPublishGate": "CLOSED",
+    "bulkPublication": "DISABLED",
+    "currentAcceptedSku": "DERMAELLE007",
+    "sourceOfTruth": "Supabase Product Master + blocked_products + physical_inventory_verifications + Empire registry",
+    "runtimeDeployment": "UNVERIFIED_IN_CURRENT_SESSION",
+    "runtimeCommit": null,
+    "runtimeVerificationNote": "Current session can verify GitHub main, but cannot independently verify Railway runtime from this workspace; do not treat prior deployment metadata as proof of current runtime."
+  },
+  "historicalReconciliation": {
+    "imageEvidenceConflict": "RESOLVED_AS_HISTORICAL_SNAPSHOT_CONFLICT",
+    "resolution": "The current canonical Product Evidence Gate record names the Connected OneDrive QA record as the accepted image evidence. Earlier records from 2026-09-27 stating that no PM-owned image was found are retained as historical snapshots and do not override the 2026-10-05 canonical gate record.",
+    "externalIdentityReferences": [
+      "https://e-dermaelle.com/products/dermaelle-hyalubalance-sebum-control-cleansing-gel-200-ml",
+      "https://alfouadpharmacies.com/en/products/dermaelle-hyalubalance-sebum-cleans-200ml"
+    ],
+    "externalReferenceRole": "identity/variant confirmation only; not PM ownership proof"
+  }
+}

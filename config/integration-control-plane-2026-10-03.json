@@ -1,0 +1,321 @@
+{
+  "updatedAt": "2026-10-03",
+  "brand": "PM COSMETICS HUB",
+  "purpose": "Integration control plane for Shopify, Google Drive, Make, Zapier, API and webhooks",
+  "liveEmpire": {
+    "railwayHealth": "https://pmcosmetics-empire-11countries-production.up.railway.app/api/health",
+    "railwayReadiness": "https://pmcosmetics-empire-11countries-production.up.railway.app/api/readiness",
+    "railwayChannelStatus": "https://pmcosmetics-empire-11countries-production.up.railway.app/api/channel/status",
+    "whatsappWebhook": "https://pmcosmetics-empire-11countries-production.up.railway.app/api/whatsapp/webhook"
+  },
+  "integrations": {
+    "shopify": {
+      "status": "connected_chatgpt_verified",
+      "store": "Pmcosmetics",
+      "domain": "pmcosmetics-lgdc2mrf.myshopify.com",
+      "currency": "USD",
+      "currentWebhookSubscriptions": 0,
+      "windsorStatus": "pending_browser_authorization",
+      "connectUrl": "https://onboard.windsor.ai/connect?connector=shopify&next=/shopify/authorize",
+      "docs": "https://shopify.dev/docs/api/webhooks/latest"
+    },
+    "googleDrive": {
+      "status": "workspace_connector_unavailable",
+      "reason": "Google Drive plugin is disabled/not available in the current ChatGPT workspace",
+      "apiDocs": "https://developers.google.com/workspace/drive/api/guides/about-sdk"
+    },
+    "make": {
+      "status": "external_webhook_adapter",
+      "nativeChatConnector": "not_found",
+      "webhookDocs": "https://help.make.com/webhooks",
+      "gatewayDocs": "https://apps.make.com/gateway"
+    },
+    "zapier": {
+      "status": "external_webhook_adapter",
+      "nativeChatConnector": "not_found",
+      "webhookDocs": "https://help.zapier.com/hc/en-us/articles/8496288690317-Trigger-Zap-workflows-from-webhooks",
+      "apiDocs": "https://help.zapier.com/hc/en-us/articles/44391646192397-Ways-to-make-API-requests-in-Zapier"
+    },
+    "m2e_multichannel": {
+      "provider": "M2E Cloud",
+      "product": "M2E Multichannel Connect",
+      "status": "pending_shopify_app_install_and_marketplace_authorization",
+      "sourceStore": "Pmcosmetics",
+      "sourceDomain": "pmcosmetics-lgdc2mrf.myshopify.com",
+      "publicationGate": "CLOSED",
+      "intendedChannels": [
+        "amazon",
+        "ebay",
+        "walmart",
+        "tiktok_shop",
+        "kaufland",
+        "temu"
+      ],
+      "capabilities": [
+        "product_listing",
+        "inventory_sync",
+        "order_sync"
+      ],
+      "officialDocs": "https://docs.m2ecloud.com/docs/shopify-setup-guide/",
+      "note": "Do not mark connected until the Shopify app installation and marketplace OAuth authorizations are verified."
+    },
+    "syncx_stock_sync": {
+      "provider": "SyncX",
+      "product": "syncX: Stock Sync & Inventory",
+      "status": "pending_shopify_app_install_and_source_feed_authorization",
+      "sourceStore": "Pmcosmetics",
+      "sourceDomain": "pmcosmetics-lgdc2mrf.myshopify.com",
+      "mode": "controlled_inventory_sync",
+      "publicationGate": "CLOSED",
+      "capabilities": [
+        "inventory_sync",
+        "product_import_update",
+        "price_sync",
+        "two_way_sync",
+        "scheduled_sync"
+      ],
+      "guardrails": {
+        "source_of_truth_required": true,
+        "zero_stock_overwrite_blocked_until_source_verified": true,
+        "commercial_publish_gate_preserved": true
+      },
+      "officialAppUrl": "https://apps.shopify.com/stock-sync"
+    },
+    "google_shopping_multifeed": {
+      "provider": "Shopify product-feed layer",
+      "status": "pending_feed_app_install_and_google_merchant_authorization",
+      "sourceStore": "Pmcosmetics",
+      "sourceDomain": "pmcosmetics-lgdc2mrf.myshopify.com",
+      "publicationGate": "CLOSED",
+      "primaryUse": "Google Shopping multi-feed",
+      "feedRequirements": [
+        "PM-owned image",
+        "verified EGP retail price",
+        "SKU/GTIN where applicable",
+        "verified inventory",
+        "product identity/provenance"
+      ],
+      "marketStrategy": {
+        "Egypt": "EGP",
+        "Gulf": "separate localized feed/currency only after market verification",
+        "note": "Do not write EGP values into Shopify's USD base-price field."
+      },
+      "candidateApps": [
+        {
+          "name": "Wixpa Google Shopping Feed",
+          "url": "https://apps.shopify.com/easyfeed-for-google-shopping-feeds",
+          "capabilities": [
+            "multi-feed",
+            "multi-language",
+            "multi-currency",
+            "Google Merchant Center"
+          ]
+        },
+        {
+          "name": "Omega Google & Facebook Feed",
+          "url": "https://apps.shopify.com/google-shopping-feed-pro",
+          "capabilities": [
+            "multi-feed",
+            "real-time inventory/price sync",
+            "multi-language",
+            "multi-currency",
+            "Google Merchant Center"
+          ]
+        }
+      ],
+      "googleMerchant": {
+        "connector": "Windsor.ai",
+        "status": "pending_authorization",
+        "writeEnabled": false
+      },
+      "safeguards": {
+        "excludeOutOfStockUntilVerified": true,
+        "excludeZeroPriceUntilVerified": true,
+        "commercialPublishGatePreserved": true
+      }
+    },
+    "doordash": {
+      "provider": "DoorDash",
+      "product": "DoorDash Sales Channel for Shopify",
+      "status": "pending_eligibility_and_merchant_connection",
+      "sourceStore": "Pmcosmetics",
+      "sourceDomain": "pmcosmetics-lgdc2mrf.myshopify.com",
+      "publicationGate": "CLOSED",
+      "eligibility": {
+        "storefrontRequired": "US physical retail storefront",
+        "category": "Beauty",
+        "minimumActiveProducts": 20,
+        "inventoryRequired": true,
+        "imageRequired": true,
+        "descriptionAndPriceRequired": true
+      },
+      "capabilities": [
+        "catalog_sync",
+        "inventory_sync",
+        "order_sync",
+        "local_delivery"
+      ],
+      "officialShopifySetup": "https://help.shopify.com/en/manual/online-sales-channels/marketplaces/doordash/setup",
+      "note": "Current Shopify/DoorDash eligibility documentation specifies a US-based store with a physical retail storefront. No eligible US PM physical location has been verified."
+    },
+    "salla_point": {
+      "provider": "Salla",
+      "product": "Salla Point",
+      "status": "pending_salla_store_activation_and_account_authorization",
+      "parentChannel": "salla",
+      "publicationGate": "CLOSED",
+      "capabilities": [
+        "in_store_sales",
+        "event_sales",
+        "branch_sales",
+        "inventory_sync",
+        "order_sync"
+      ],
+      "useCases": [
+        "retail_store",
+        "mobile_booth",
+        "special_events"
+      ],
+      "note": "Salla Point is Salla's POS surface. The current Salla channel is not connected in the Empire, so POS activation cannot be verified yet."
+    },
+    "altera_export_import": {
+      "provider": "Shopify App",
+      "product": "Altera - Export and Import",
+      "status": "pending_shopify_app_install",
+      "role": "bulk_import_export",
+      "capabilities": [
+        "Excel/CSV import",
+        "Excel/CSV export",
+        "bulk product updates",
+        "Matrixify-compatible workflows"
+      ],
+      "sourceStore": "Pmcosmetics",
+      "publicationGate": "CLOSED",
+      "officialAppUrl": "https://apps.shopify.com/altera"
+    },
+    "duplify": {
+      "provider": "Shopify App",
+      "product": "Duplify - Duplicate & Backup",
+      "status": "pending_shopify_app_install",
+      "role": "store_clone_backup_sync",
+      "capabilities": [
+        "product_copy",
+        "collection_copy",
+        "inventory_copy",
+        "metafields",
+        "themes",
+        "backup",
+        "multi-store sync"
+      ],
+      "sourceStore": "Pmcosmetics",
+      "publicationGate": "CLOSED",
+      "officialAppUrl": "https://apps.shopify.com/duplicate-store"
+    },
+    "etsy_shopify": {
+      "provider": "Shopify sales channel app",
+      "product": "Etsy Integration",
+      "status": "pending_shopify_app_install_and_etsy_seller_oauth",
+      "parentChannel": "etsy",
+      "capabilities": [
+        "product_sync",
+        "inventory_sync",
+        "order_sync"
+      ],
+      "publicationGate": "CLOSED",
+      "officialAppCandidates": [
+        "https://apps.shopify.com/etsy-integration-dpl",
+        "https://apps.shopify.com/etsy-integration-cedcommerce"
+      ],
+      "note": "Etsy seller authorization is required; current ChatGPT connector is search-only, not seller management."
+    },
+    "tiktok_shop_shopify": {
+      "provider": "Shopify TikTok sales channel",
+      "product": "TikTok Shop",
+      "status": "pending_store_country_eligibility_and_tiktok_shop_authorization",
+      "parentChannel": "tiktok_shop",
+      "capabilities": [
+        "catalog_sync",
+        "inventory_sync",
+        "fulfillment_sync",
+        "order_sync"
+      ],
+      "publicationGate": "CLOSED",
+      "shopifyRequirements": [
+        "verifiable store address",
+        "eligible country",
+        "online store",
+        "TikTok for Business account",
+        "return policy page"
+      ],
+      "eligibleCountries": [
+        "United States",
+        "United Kingdom",
+        "Spain",
+        "Ireland",
+        "France",
+        "Italy",
+        "Germany",
+        "Mexico",
+        "Japan",
+        "Brazil"
+      ],
+      "note": "Egypt is not in Shopify's currently documented TikTok Shop eligible-country list."
+    },
+    "facebook_marketplace": {
+      "provider": "Meta / Facebook",
+      "status": "pending_meta_commerce_channel_setup",
+      "distinction": {
+        "marketplace": "not directly managed by current Shopify/Windsor connector",
+        "facebook_shop": "official Shopify->Meta catalog sync surface"
+      },
+      "sourceStore": "Pmcosmetics",
+      "sourceDomain": "pmcosmetics-lgdc2mrf.myshopify.com",
+      "currentShopifyPublicationDetected": false,
+      "currentWindsorFacebookAccounts": [
+        "758458256557661",
+        "689846283340520",
+        "1308509513682283"
+      ],
+      "capabilities": [
+        "facebook_catalog_sync",
+        "facebook_shop",
+        "instagram_shopping",
+        "meta_marketing"
+      ],
+      "publicationGate": "CLOSED",
+      "requirements": [
+        "Facebook & Instagram by Meta sales channel installation",
+        "Meta business asset connection",
+        "eligible products",
+        "Google Product Category",
+        "Meta commerce policy compliance"
+      ],
+      "note": "For an Egypt-based store, Shopify documents Facebook/Instagram catalog sync and Facebook Shop; Marketplace availability and seller eligibility are separate Meta-controlled surfaces.",
+      "execution": {
+        "status": "BLOCKER_RECONCILIATION_COMPLETE",
+        "checkedAt": "2026-10-03",
+        "product": {
+          "sku": "DERMAELLE007",
+          "inventory": 48,
+          "barcode": "6223007905060",
+          "verifiedRetailPriceEGP": 239,
+          "shopifyStatus": "DRAFT",
+          "shopifyBasePriceUSD": "0.00"
+        },
+        "blockers": [
+          "Shopify enabled presentment currencies contains USD only",
+          "Egypt market was not created",
+          "Meta sales channel is not installed",
+          "Commercial publish gate remains CLOSED"
+        ],
+        "safeResolution": "Do not invent USD price or convert EGP without an approved pricing source; install Meta channel and configure Egypt/EGP through Shopify admin/payment eligibility, then activate only after re-verification."
+      }
+    }
+  },
+  "security": {
+    "commercialPublishGate": "CLOSED",
+    "noSecretsInGit": "required",
+    "webhookVerification": "required before activating new inbound commercial webhooks",
+    "doctrine": "Evidence -> Validation -> Authorization -> Reversible Pilot -> Verification -> Scale"
+  }
+}

@@ -1,0 +1,227 @@
+import assert from "node:assert/strict";
+import { createHmac } from "node:crypto";
+import app from "../server/index.mjs";
+import { commercialPublishGateBlockReason } from "./batch-gate.mjs";
+
+assert.equal(typeof app, "function");
+assert.equal(typeof app.get, "function");
+
+// Pure fail-closed policy tests: no production endpoint or external channel is called.
+assert.equal(commercialPublishGateBlockReason({ dryRun: false, gate: "CLOSED", productEvidenceGate: "OPEN", batchGate: "OPEN", commercialCatalogLive: true }), "COMMERCIAL_PUBLISH_GATE_CLOSED");
+assert.equal(commercialPublishGateBlockReason({ dryRun: false, gate: "OPEN", productEvidenceGate: "CLOSED", batchGate: "OPEN", commercialCatalogLive: true }), "PRODUCT_EVIDENCE_GATE_CLOSED");
+assert.equal(commercialPublishGateBlockReason({ dryRun: false, gate: "OPEN", productEvidenceGate: "OPEN", batchGate: "CLOSED", commercialCatalogLive: true }), "BATCH_COMMERCIAL_PUBLISH_GATE_CLOSED");
+assert.equal(commercialPublishGateBlockReason({ dryRun: false, gate: "OPEN", productEvidenceGate: "OPEN", batchGate: "OPEN", commercialCatalogLive: false }), "COMMERCIAL_CATALOG_NOT_LIVE");
+assert.equal(commercialPublishGateBlockReason({ dryRun: false, gate: "OPEN", productEvidenceGate: "OPEN", batchGate: "OPEN", commercialCatalogLive: true }), null);
+assert.equal(commercialPublishGateBlockReason({ dryRun: true, gate: "CLOSED", productEvidenceGate: "CLOSED", batchGate: "CLOSED", commercialCatalogLive: false }), null);
+
+const server = app.listen(0);
+const { port } = server.address();
+
+async function assertAuthRequired(url, options = {}) {
+  const response = await fetch(url, options);
+  assert.equal(response.status, 401);
+  const body = await response.json();
+  assert.equal(body.authenticated, false);
+  assert.equal(body.reason, "AUTH_TOKEN_MISSING");
+}
+
+try {
+  const authConfig = await fetch(`http://127.0.0.1:${port}/api/auth/config`);
+  assert.equal(authConfig.status, 200);
+  const authConfigBody = await authConfig.json();
+  assert.equal(authConfigBody.ok, true);
+  assert.equal(authConfigBody.serverVerification, true);
+  assert.equal(authConfigBody.exactEmailAllowlist, true);
+  assert.equal(authConfigBody.allowedEmailCount, 4);
+
+  const authSession = await fetch(`http://127.0.0.1:${port}/api/auth/session`);
+  assert.equal(authSession.status, 401);
+  const authSessionBody = await authSession.json();
+  assert.equal(authSessionBody.authenticated, false);
+  assert.equal(authSessionBody.reason, "AUTH_TOKEN_MISSING");
+
+  const whatsappStatus = await fetch(`http://127.0.0.1:${port}/api/whatsapp/status`);
+  assert.equal(whatsappStatus.status, 200);
+  const whatsappStatusBody = await whatsappStatus.json();
+  assert.equal(whatsappStatusBody.ok, true);
+  assert.equal(whatsappStatusBody.routing.primary, "https://wa.me/201055655649");
+  assert.equal(whatsappStatusBody.routing.catalog, "https://wa.me/c/201055655649");
+
+  if (!whatsappStatusBody.webhook.configured) {
+    const whatsappWebhook = await fetch(`http://127.0.0.1:${port}/api/whatsapp/webhook`);
+    assert.equal(whatsappWebhook.status, 503);
+  }
+
+  // Verify Meta's GET challenge and fail-closed POST behavior without using real credentials.
+  const oldVerifyToken = process.env.WHATSAPP_BUSINESS_VERIFY_TOKEN;
+  const oldWebhookSecret = process.env.WHATSAPP_WEBHOOK_SECRET;
+  try {
+    process.env.WHATSAPP_BUSINESS_VERIFY_TOKEN = "test-verify-token";
+    process.env.WHATSAPP_WEBHOOK_SECRET = "test-app-secret";
+
+    const challenge = await fetch(
+      `http://127.0.0.1:${port}/api/whatsapp/webhook?hub.mode=subscribe&hub.verify_token=test-verify-token&hub.challenge=challenge-123`
+    );
+    assert.equal(challenge.status, 200);
+    assert.equal(await challenge.text(), "challenge-123");
+
+    const rejectedChallenge = await fetch(
+      `http://127.0.0.1:${port}/api/whatsapp/webhook?hub.mode=subscribe&hub.verify_token=wrong-token&hub.challenge=challenge-123`
+    );
+    assert.equal(rejectedChallenge.status, 403);
+
+    const rawBody = JSON.stringify({ object: "whatsapp_business_account", entry: [] });
+    const signature = "sha256=" + createHmac("sha256", "test-app-secret").update(rawBody).digest("hex");
+    const signedWebhook = await fetch(`http://127.0.0.1:${port}/api/whatsapp/webhook`, {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-hub-signature-256": signature },
+      body: rawBody
+    });
+    assert.equal(signedWebhook.status, 503);
+    const signedWebhookBody = await signedWebhook.json();
+    assert.equal(signedWebhookBody.received, true);
+    assert.equal(signedWebhookBody.processed, false);
+    assert.equal(signedWebhookBody.retryable, true);
+    assert.equal(signedWebhookBody.reason, "WHATSAPP_WEBHOOK_PROCESSOR_UNAVAILABLE");
+
+    const invalidSignature = await fetch(`http://127.0.0.1:${port}/api/whatsapp/webhook`, {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-hub-signature-256": "sha256=invalid" },
+      body: rawBody
+    });
+    assert.equal(invalidSignature.status, 401);
+  } finally {
+    if (oldVerifyToken === undefined) delete process.env.WHATSAPP_BUSINESS_VERIFY_TOKEN;
+    else process.env.WHATSAPP_BUSINESS_VERIFY_TOKEN = oldVerifyToken;
+    if (oldWebhookSecret === undefined) delete process.env.WHATSAPP_WEBHOOK_SECRET;
+    else process.env.WHATSAPP_WEBHOOK_SECRET = oldWebhookSecret;
+  }
+
+  const amplitudeStatus = await fetch(`http://127.0.0.1:${port}/api/amplitude/status`);
+  assert.equal(amplitudeStatus.status, 200);
+  const amplitudeBody = await amplitudeStatus.json();
+  assert.equal(amplitudeBody.ok, true);
+  assert.equal(amplitudeBody.configured, false);
+
+  process.env.RAILWAY_GIT_COMMIT_SHA = "test-railway-commit";
+  const health = await fetch(`http://127.0.0.1:${port}/api/health`);
+  assert.equal(health.status, 200);
+  const healthBody = await health.json();
+  assert.equal(healthBody.ok, true);
+  assert.equal(healthBody.gate, "CLOSED");
+  assert.equal(healthBody.commitSha, "test-railway-commit");
+  assert.equal(healthBody.service, "pmcosmetics-empire-11countries");
+  assert.equal(healthBody.supabaseConfigured, healthBody.dataSource === "Supabase");
+  assert.deepEqual(healthBody.architecture, ["ChatGPT","Products OS","Airtable","Supabase","Vercel","Railway","Manus","WooCommerce","Shopify","Noon","Amazon","Jumia"]);
+
+  await assertAuthRequired(`http://127.0.0.1:${port}/api/readiness`);
+
+  const metaStatus = await fetch(`http://127.0.0.1:${port}/api/meta/status`);
+  assert.equal(metaStatus.status, 200);
+  const metaStatusBody = await metaStatus.json();
+  assert.equal(metaStatusBody.ok, true);
+  assert.equal(metaStatusBody.integration, "Meta AI");
+  assert.equal(metaStatusBody.readOnly, true);
+  assert.equal(metaStatusBody.gate, "CLOSED");
+  assert.equal(metaStatusBody.commercialWrites, "LOCKED");
+  assert.equal(metaStatusBody.batchPublishGate, "CLOSED");
+  assert.ok(Array.isArray(metaStatusBody.publishReadyProducts));
+  assert.equal(metaStatusBody.publishReadyProducts.length, 1);
+  assert.equal(metaStatusBody.publishReadyProducts[0]?.sku, "DERMAELLE007");
+
+  await assertAuthRequired(`http://127.0.0.1:${port}/api/manus/status`);
+
+  const manusImport = await fetch(`http://127.0.0.1:${port}/api/manus/import`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ products: [
+      { sku: "PM-MANUS-001", name: "Manus Product A" },
+      { sku: "PM-MANUS-001", name: "Duplicate" },
+      { name: "Missing SKU" }
+    ]})
+  });
+  assert.equal(manusImport.status, 200);
+  const manusBody2 = await manusImport.json();
+  assert.equal(manusBody2.validCount, 1);
+  assert.equal(manusBody2.duplicateSkuCount, 1);
+  assert.equal(manusBody2.invalidCount, 1);
+  assert.equal(manusBody2.publishable, false);
+
+  await assertAuthRequired(`http://127.0.0.1:${port}/api/woocommerce/status`);
+  await assertAuthRequired(`http://127.0.0.1:${port}/api/salla/status`);
+  await assertAuthRequired(`http://127.0.0.1:${port}/api/salla/check`);
+  await assertAuthRequired(`http://127.0.0.1:${port}/api/salla/import`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ dryRun: true, targetCurrency: "EGP", products: [{ sku: "DERMAELLE007" }] })
+  });
+
+  await assertAuthRequired(`http://127.0.0.1:${port}/api/woocommerce/sync`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ dryRun: true, products: [
+      { sku: "PM-TEST-001", name: "PM Test Product", price: 100, stock: 1 },
+      { sku: "PM-TEST-001", name: "Duplicate" }
+    ]})
+  });
+
+  await assertAuthRequired(`http://127.0.0.1:${port}/api/products/batch/readiness`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ products: [
+      {
+        sku: "PM-BATCH-001",
+        name: "Verified Product",
+        gtin: "1234567890123",
+        imageUrl: "https://example.test/pm-batch-001.jpg",
+        stock: 10,
+        cost: 100,
+        provenanceVerified: true,
+        imageVerified: true,
+        authorizationRequired: false
+      },
+      {
+        sku: "PM-BATCH-002",
+        name: "Blocked Product",
+        gtin: "1234567890124",
+        stock: 0,
+        cost: 0,
+        provenanceVerified: false,
+        imageVerified: false,
+        authorizationRequired: true,
+        authorizationVerified: false
+      }
+    ]})
+  });
+
+  await assertAuthRequired(`http://127.0.0.1:${port}/api/products/batch/publish`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ dryRun: true, products: [] })
+  });
+
+  await assertAuthRequired(`http://127.0.0.1:${port}/api/products/batch/publish`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ dryRun: false, products: [] })
+  });
+
+  const products = await fetch(`http://127.0.0.1:${port}/api/products`);
+  const productsBody = await products.json();
+  assert.equal(productsBody.gate, "CLOSED");
+  assert.equal(productsBody.source, "Supabase");
+  assert.equal(productsBody.readOnly, true);
+  if (products.status === 200) {
+    assert.equal(productsBody.ok, true);
+    assert.equal(productsBody.publishable, false);
+    assert.ok(Array.isArray(productsBody.products));
+  } else {
+    assert.equal(products.status, 503);
+    assert.equal(productsBody.ok, false);
+    assert.ok(productsBody.reason);
+  }
+} finally {
+  server.close();
+}
+
+console.log("Gate API contract tests passed");
